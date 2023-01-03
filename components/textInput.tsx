@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 import { TextInput as TextInputPaper } from 'react-native-paper';
+import { TextInputPaperProps } from '../config/interfaces';
 
-export const TextInput: FC<any> = (props) => {
+export const TextInput: FC<TextInputPaperProps> = (props) => {
   return (
     <TextInputPaper
       label={props.label}
       mode={props.mode}
-      placeholderTextColor={props.placeholder}
+      placeholderTextColor={props.placeholderTextColor}
       activeOutlineColor={props.activeOutlineColor}
       textColor={props.textColor}
+      secureTextEntry={props.secureTextEntry}
       outlineColor={props.outlineColor}
       theme={{
         colors: {
@@ -19,7 +21,7 @@ export const TextInput: FC<any> = (props) => {
           background: 'white',
         },
       }}
-      onChangeText={props.onChange}
+      onChangeText={props.onChangeText}
       style={[props.style, { width: '90%' }]}
       contentStyle={props.contentStyle}
     />

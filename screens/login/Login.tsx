@@ -87,7 +87,7 @@ export const Login: FC<any> = ({ navigation }) => {
             children={"Don't have an account? "}
             style={{ fontWeight: '600', color: 'grey', fontSize: 16 }}
           />
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <TouchableOpacity onPress={() => navigation.push('Signup')}>
             <Text
               style={{ fontWeight: '600', color: 'orange', fontSize: 16 }}
               children={'Sign Up'}
