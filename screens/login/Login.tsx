@@ -26,6 +26,7 @@ export const Login: FC<any> = ({ navigation }) => {
         const res = await signInWithEmailAndPassword(auth, email, password);
         if (res) {
           setIsLoading(false);
+          Alert.alert('Login successful!');
           setEmail('');
           setPassword('');
           navigation.pop();
