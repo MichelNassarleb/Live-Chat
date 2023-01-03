@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { TextInput } from '../../components/textInput';
 import { auth } from '../../config/firebase';
+import { Chat } from '../chat/Chat';
 import { styles } from './loginStyles';
 
 export const Login: FC<any> = ({ navigation }) => {
@@ -29,7 +30,7 @@ export const Login: FC<any> = ({ navigation }) => {
           Alert.alert('Login successful!');
           setEmail('');
           setPassword('');
-          navigation.pop();
+          navigation.navigate('Chat');
         }
       }
     } catch (err: any) {
@@ -39,6 +40,7 @@ export const Login: FC<any> = ({ navigation }) => {
       setIsLoading(false);
     }
   };
+
   return (
     <KeyboardAvoidingView behavior='height' style={styles.container}>
       <Image style={styles.Image} source={backgroundImage} />
@@ -75,7 +77,14 @@ export const Login: FC<any> = ({ navigation }) => {
             size={30}
           />
         ) : (
-          <TouchableOpacity style={styles.button} onPress={onHandleLogin}>
+          <TouchableOpacity
+            disabled={!(!!email && !!password)}
+            style={[
+              styles.button,
+              !(!!email && !!password) && { backgroundColor: 'grey' },
+            ]}
+            onPress={onHandleLogin}
+          >
             <Text
               style={{ fontWeight: 'bold', color: '#fff', fontSize: 18 }}
               children={'Log in'}

@@ -1,20 +1,21 @@
 import React, { useEffect, FC } from 'react';
 import { Text, Alert, View, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Entypo } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import { styles } from './HomeStyles';
 import { auth } from '../../config/firebase';
+
+export const authenticationSignOut = () => {
+  auth
+    .signOut()
+    .then(() => {
+      Alert.alert('Successfully signed out');
+    })
+    .catch(() => {
+      Alert.alert('Please try again.');
+    });
+};
 export const Home: FC<any> = ({ navigation }) => {
-  const authenticationSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        Alert.alert('Successfully signed out');
-      })
-      .catch(() => {
-        Alert.alert('Please try again.');
-      });
-  };
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -42,7 +43,11 @@ export const Home: FC<any> = ({ navigation }) => {
             {auth.currentUser?.email ? 'LOGOUT' : 'LOGIN'}
           </Text>
           <View style={styles.lockContainer}>
-            <MaterialIcons name='lock' size={24} color={'orange'} />
+            {auth.currentUser?.email ? (
+              <AntDesign name='logout' color={'orange'} size={20} />
+            ) : (
+              <MaterialIcons name='lock' size={24} color={'orange'} />
+            )}
           </View>
         </TouchableOpacity>
       ),
