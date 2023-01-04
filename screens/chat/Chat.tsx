@@ -18,10 +18,14 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { authenticationSignOut } from '../home/Home';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { setMessages } from '../../redux/slices/RTDBSlice';
 export const Chat = () => {
-  const [messages, setMessages] = useState<
-    Array<{ _id: string; createdAt: any; text: string; user: string }>
-  >([]);
+  // const [messages, setMessages] = useState<
+  //   Array<{ _id: string; createdAt: any; text: string; user: string }>
+  // >([]);
+  const messages = useSelector((state: RootState) => state.RTDB.messages);
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({
@@ -60,25 +64,9 @@ export const Chat = () => {
       ),
     });
   }, [navigation, auth]);
-  useLayoutEffect(() => {
-    const collectionRef = collection(database, 'chats');
-    const q = query(collectionRef, orderBy('createdAt', 'desc'));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setMessages(
-        snapshot.docs.map((doc) => ({
-          _id: doc.id,
-          createdAt: new Date(),
-          text: doc.data().text,
-          user: doc.data().user,
-        }))
-      );
-    });
-    return () => unsubscribe();
-  }, []);
-
+  const dispatch = useDispatch();
   const onSend = useCallback((messages: any) => {
-    setMessages((prev) => GiftedChat.append(prev, messages));
+    dispatch((prev) => setMessages(GiftedChat.append(prev, messages)));
     const { _id, createdAt, text, user } = messages[0];
     addDoc(collection(database, 'chats'), {
       _id,

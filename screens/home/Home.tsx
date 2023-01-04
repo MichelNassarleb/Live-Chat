@@ -3,8 +3,16 @@ import { Text, Alert, View, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { styles } from './HomeStyles';
-import { auth } from '../../config/firebase';
-
+import { auth, database } from '../../config/firebase';
+import {
+  collection,
+  addDoc,
+  orderBy,
+  query,
+  onSnapshot,
+} from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+import { setMessages } from '../../redux/slices/RTDBSlice';
 export const authenticationSignOut = () => {
   auth
     .signOut()
@@ -16,6 +24,7 @@ export const authenticationSignOut = () => {
     });
 };
 export const Home: FC<any> = ({ navigation }) => {
+  const dispatch = useDispatch();
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -61,8 +70,25 @@ export const Home: FC<any> = ({ navigation }) => {
         />
       ),
     });
-  }, [navigation, auth]);
+  }, [navigation, auth, Object.keys(auth).length]);
+  useEffect(() => {
+    const collectionRef = collection(database, 'chats');
+    const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      dispatch(
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            _id: doc.id,
+            createdAt: doc.data().createdAt.toDate(),
+            text: doc.data().text,
+            user: doc.data().user,
+          }))
+        )
+      );
+    });
+    return () => unsubscribe();
+  }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity
