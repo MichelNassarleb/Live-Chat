@@ -12,6 +12,9 @@ const RTDBSlice = createSlice({
     setMessages(state: any, { payload }: any) {
       state.messages = [...payload];
     },
+    setMemes(state, { payload }) {
+      state.memes = [...payload];
+    },
   },
 });
 
