@@ -12,3 +12,15 @@ export interface TextInputPaperProps {
   contentStyle?: any;
   style?: any;
 }
+
+export interface RTDBSliceInterface {
+  messages: Array<{
+    _id?: string;
+    createdAt?: Date;
+    text?: string;
+    user?: {
+      _id?: string;
+      name?: string;
+    };
+  }>;
+}
