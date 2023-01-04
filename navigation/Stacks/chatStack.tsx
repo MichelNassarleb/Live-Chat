@@ -5,6 +5,7 @@ import { Login } from '../../screens/login/Login';
 import { Signup } from '../../screens/signup/Signup';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Home } from '../../screens/home/Home';
+import { Admin } from '../../screens/admin/admin';
 export const ChatStack = () => {
   const Stack = createStackNavigator();
   return (
@@ -26,6 +27,7 @@ export const ChatStack = () => {
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Signup' component={Signup} />
       <Stack.Screen name='Chat' component={Chat} />
+      <Stack.Screen name='Admin' component={Admin} />
     </Stack.Navigator>
   );
 };

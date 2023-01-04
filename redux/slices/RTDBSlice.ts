@@ -3,6 +3,7 @@ import { RTDBSliceInterface } from '../../config/interfaces';
 
 const initialState: RTDBSliceInterface = {
   messages: [],
+  memes: [],
 };
 const RTDBSlice = createSlice({
   name: 'RTDB',

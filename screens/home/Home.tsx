@@ -4,13 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { styles } from './HomeStyles';
 import { auth, database } from '../../config/firebase';
-import {
-  collection,
-  addDoc,
-  orderBy,
-  query,
-  onSnapshot,
-} from 'firebase/firestore';
+import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import { setMessages } from '../../redux/slices/RTDBSlice';
 export const authenticationSignOut = () => {
@@ -25,6 +19,7 @@ export const authenticationSignOut = () => {
 };
 export const Home: FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
+  console.log(auth?.currentUser?.email?.length);
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -48,9 +43,12 @@ export const Home: FC<any> = ({ navigation }) => {
             } else navigation.navigate('Login');
           }}
         >
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {auth.currentUser?.email ? 'LOGOUT' : 'LOGIN'}
-          </Text>
+          {auth.currentUser ? (
+            <Text style={{ color: 'white', fontWeight: 'bold' }}> LOGOUT</Text>
+          ) : (
+            <Text style={{ color: 'white', fontWeight: 'bold' }}> LOGIN</Text>
+          )}
+
           <View style={styles.lockContainer}>
             {auth.currentUser?.email ? (
               <AntDesign name='logout' color={'orange'} size={20} />
@@ -65,12 +63,19 @@ export const Home: FC<any> = ({ navigation }) => {
           name='pets'
           color={'orange'}
           size={24}
-          onPress={() => Alert.alert('Woof! woof!')}
+          onPress={() => {
+            if (
+              auth.currentUser?.email?.toLowerCase() ==
+              'michelnassar371@gmail.com'
+            ) {
+              navigation.navigate('Admin');
+            } else Alert.alert('Woof! woof!');
+          }}
           style={{ marginRight: 10 }}
         />
       ),
     });
-  }, [navigation, auth, Object.keys(auth).length]);
+  }, [navigation, auth?.currentUser?.email?.length, Object.keys(auth).length]);
   useEffect(() => {
     const collectionRef = collection(database, 'chats');
     const q = query(collectionRef, orderBy('createdAt', 'desc'));

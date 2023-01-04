@@ -23,4 +23,8 @@ export interface RTDBSliceInterface {
       name?: string;
     };
   }>;
+  memes: Array<{
+    text: string;
+    likes: [string];
+  }>;
 }
