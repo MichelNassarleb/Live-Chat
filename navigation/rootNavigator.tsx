@@ -14,17 +14,6 @@ const AuthenticatedUserProvider = ({ children }) => {
   );
 };
 export const RootNavigator = () => {
-  const { user, setUser }: any = useContext(AuthenticatedUserContext);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
-      authenticatedUser ? setUser(authenticatedUser) : setUser(null);
-      console.log(user);
-    });
-
-    return () => unsubscribe();
-  }, [user]);
-
   return (
     <AuthenticatedUserProvider>
       <NavigationContainer>
