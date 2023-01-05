@@ -13,10 +13,10 @@ const RTDBSlice = createSlice({
       state.messages = [...payload];
     },
     setMemes(state, { payload }) {
-      state.memes = [...payload];
+      state.memes.push(payload);
     },
   },
 });
 
-export const { setMessages } = RTDBSlice.actions;
+export const { setMessages, setMemes } = RTDBSlice.actions;
 export default RTDBSlice.reducer;

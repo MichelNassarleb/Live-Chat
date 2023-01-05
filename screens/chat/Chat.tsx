@@ -6,25 +6,16 @@ import React, {
 } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Alert, Text } from 'react-native';
-import {
-  collection,
-  addDoc,
-  orderBy,
-  query,
-  onSnapshot,
-} from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { auth, database } from '../../config/firebase';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { authenticationSignOut } from '../home/Home';
+import { authenticationSignOut } from '../../services/signout';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { setMessages } from '../../redux/slices/RTDBSlice';
 export const Chat = () => {
-  // const [messages, setMessages] = useState<
-  //   Array<{ _id: string; createdAt: any; text: string; user: string }>
-  // >([]);
   const messages = useSelector((state: RootState) => state.RTDB.messages);
   const navigation = useNavigation();
   useEffect(() => {

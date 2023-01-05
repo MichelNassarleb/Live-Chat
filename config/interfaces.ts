@@ -7,9 +7,11 @@ export interface TextInputPaperProps {
   secureTextEntry?: boolean;
   activeOutlineColor?: string;
   textColor?: string;
+  numberOfLines?: number;
   outlineColor?: string;
   onChangeText?: any;
   contentStyle?: any;
+  value?: string;
   style?: any;
 }
 
@@ -24,7 +26,13 @@ export interface RTDBSliceInterface {
     };
   }>;
   memes: Array<{
-    text: string;
+    meme: string;
     likes: [string];
   }>;
+}
+
+export interface MemeItemProps {
+  meme: string;
+  likes: Array<string>;
+  color?: string;
 }
