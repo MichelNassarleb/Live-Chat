@@ -7,30 +7,20 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 import { TextInput } from '../../components/textInput';
 import { database } from '../../config/firebase';
-import { setMemes } from '../../redux/slices/RTDBSlice';
 import { styles } from './adminStyles';
 export const Admin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memeInput, setMemeInput] = useState<string>('');
   const [memeLanguage, setMemeLanguage] = useState<string>('');
-  const dispatch = useDispatch();
 
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
-    dispatch(
-      setMemes({
-        meme,
-        likes: [],
-        createdAt: new Date(),
-      })
-    );
     addDoc(collection(database, 'memes'), {
       meme,
       likes: [],
+      createdAt: new Date(),
     })
       .then(() => {
         setIsLoading(false);

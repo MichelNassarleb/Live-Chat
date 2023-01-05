@@ -79,9 +79,7 @@ export const Home: FC<any> = ({ navigation }) => {
   ]);
   useEffect(() => {
     const chatsRef = collection(database, 'chats');
-    const memesRef = collection(database, 'memes');
     const q = query(chatsRef, orderBy('createdAt', 'desc'));
-    const qMemes = query(memesRef);
     const unsubscribe = onSnapshot(q, (snapshot) => {
       dispatch(
         setMessages(
@@ -94,35 +92,26 @@ export const Home: FC<any> = ({ navigation }) => {
         )
       );
     });
-    const unsub = onSnapshot(qMemes, (snap) => {
-      dispatch(
-        setMemes(
-          snap.docs.map((doc) => ({
-            meme: doc.data().meme,
-            likes: [...doc.data().likes],
-          }))
-        )
-      );
-    });
     return () => unsubscribe();
   }, []);
   const data = useSelector((state: RootState) => state.RTDB.memes);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
     });
     return () => unsubscribe();
   }, []);
-  console.log(data[0]);
   return (
     <View style={styles.container}>
       <FlatList
-        data={data[0]}
+        data={data}
         renderItem={(item) => {
           return (
             <MemeItem
-              likes={item?.item.likes}
-              meme={item.item.meme}
+              likes={item?.item?.likes}
+              meme={item?.item?.meme}
+              createdAt={item?.item?.createdAt}
               color={
                 item?.item?.likes?.filter(
                   (item) => item == auth.currentUser?.email
