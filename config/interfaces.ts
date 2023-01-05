@@ -36,4 +36,5 @@ export interface MemeItemProps {
   meme: string;
   likes: Array<string>;
   color?: string;
+  createdAt?: Date;
 }

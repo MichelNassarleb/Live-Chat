@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React, { FC } from 'react';
 import { Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -6,11 +7,18 @@ import { MemeItemProps } from '../../config/interfaces';
 import { styles } from './memeItemStyles';
 
 export const MemeItem: FC<MemeItemProps> = (props) => {
-  return (
+  return props.meme ? (
     <View style={styles.container}>
-      <Text children={props.meme} />
+      {props.meme ? <Text children={props.meme} /> : null}
+      {props.createdAt ? (
+        <Text
+          children={format(new Date(props?.createdAt), 'yyyy-MM-dd HH:mm:ss a')}
+        />
+      ) : null}
       <View style={styles.bottomContainer}>
-        <Text children={props?.likes?.length} style={styles.likes} />
+        {props?.likes?.length > 0 ? (
+          <Text children={props?.likes?.length} style={styles.likes} />
+        ) : null}
         <MaterialIcons
           size={24}
           onPress={() => console.log('presssed')}
@@ -19,5 +27,5 @@ export const MemeItem: FC<MemeItemProps> = (props) => {
         />
       </View>
     </View>
-  );
+  ) : null;
 };
