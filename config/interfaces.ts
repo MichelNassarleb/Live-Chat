@@ -28,6 +28,7 @@ export interface RTDBSliceInterface {
   memes: Array<{
     meme: string;
     likes: [string];
+    createdAt: Date;
   }>;
 }
 

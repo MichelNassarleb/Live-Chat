@@ -25,6 +25,7 @@ export const Admin = () => {
       setMemes({
         meme,
         likes: [],
+        createdAt: new Date(),
       })
     );
     addDoc(collection(database, 'memes'), {

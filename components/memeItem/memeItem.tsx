@@ -3,23 +3,14 @@ import { Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { auth } from '../../config/firebase';
 import { MemeItemProps } from '../../config/interfaces';
+import { styles } from './memeItemStyles';
 
 export const MemeItem: FC<MemeItemProps> = (props) => {
   return (
-    <View
-      style={{
-        margin: 20,
-        padding: 20,
-        borderWidth: 1,
-        borderColor: 'orange',
-        borderRadius: 5,
-      }}
-    >
+    <View style={styles.container}>
       <Text children={props.meme} />
-      <View
-        style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}
-      >
-        <Text children={props?.likes?.length} style={{ marginRight: 10 }} />
+      <View style={styles.bottomContainer}>
+        <Text children={props?.likes?.length} style={styles.likes} />
         <MaterialIcons
           size={24}
           onPress={() => console.log('presssed')}
