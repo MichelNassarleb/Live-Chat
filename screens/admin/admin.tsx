@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import React, { useState, useCallback } from 'react';
 import {
   ActivityIndicator,
@@ -17,7 +17,8 @@ export const Admin = () => {
 
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
-    addDoc(collection(database, 'memes'), {
+    const memeRef = collection(database, 'memes');
+    setDoc(doc(memeRef, meme), {
       meme,
       likes: [],
       createdAt: new Date(),
@@ -31,6 +32,7 @@ export const Admin = () => {
       .catch((er) => {
         Alert.alert(er);
         setMemeInput('');
+        setIsLoading(false);
         setMemeLanguage('');
       });
   }, []);

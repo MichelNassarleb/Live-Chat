@@ -12,8 +12,6 @@ export const TextInput: FC<TextInputPaperProps> = (props) => {
       textColor={props.textColor}
       secureTextEntry={props.secureTextEntry}
       outlineColor={props.outlineColor}
-      multiline={true}
-      numberOfLines={props.numberOfLines}
       value={props.value}
       theme={{
         colors: {

@@ -37,4 +37,5 @@ export interface MemeItemProps {
   likes: Array<string>;
   color?: string;
   createdAt?: Date;
+  onLikePress?: () => void;
 }
