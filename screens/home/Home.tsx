@@ -4,18 +4,53 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { styles } from './HomeStyles';
 import { auth, database } from '../../config/firebase';
-import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  orderBy,
+  query,
+  onSnapshot,
+  updateDoc,
+  doc,
+} from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMemes, setMessages } from '../../redux/slices/RTDBSlice';
+import { setMessages } from '../../redux/slices/RTDBSlice';
 import { FlatList } from 'react-native-gesture-handler';
 import { MemeItem } from '../../components/memeItem/memeItem';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authenticationSignOut } from '../../services/signout';
 import { RootState } from '../../redux/store';
+import { MemeItemProps } from '../../config/interfaces';
 
 export const Home: FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [user, setUser] = useState<any>(null);
+  const onLikePress = (item: MemeItemProps) => {
+    const memeReference = doc(database, 'memes', item.meme);
+    if (
+      auth.currentUser?.email &&
+      !item.likes.includes(auth.currentUser.email)
+    ) {
+      const likes = [...item.likes];
+      likes.push(auth.currentUser?.email);
+      updateDoc(memeReference, {
+        likes,
+      });
+    }
+    if (
+      auth.currentUser?.email &&
+      item.likes.includes(auth.currentUser.email)
+    ) {
+      const likes = [...item.likes];
+      const likesFiltered = likes.filter(
+        (like) => like != auth.currentUser?.email
+      );
+      updateDoc(memeReference, {
+        likes: likesFiltered,
+      });
+    } else if (!auth.currentUser?.email) {
+      Alert.alert('You must be logged in');
+    }
+  };
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -102,16 +137,18 @@ export const Home: FC<any> = ({ navigation }) => {
     });
     return () => unsubscribe();
   }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
         data={data}
-        renderItem={(item) => {
+        renderItem={(item: { item: MemeItemProps }) => {
           return (
             <MemeItem
               likes={item?.item?.likes}
               meme={item?.item?.meme}
               createdAt={item?.item?.createdAt}
+              onLikePress={() => onLikePress(item.item)}
               color={
                 item?.item?.likes?.filter(
                   (item) => item == auth.currentUser?.email

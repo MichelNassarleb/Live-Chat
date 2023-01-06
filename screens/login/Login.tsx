@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { TextInput } from '../../components/textInput';
 import { auth } from '../../config/firebase';
-import { Chat } from '../chat/Chat';
 import { styles } from './loginStyles';
 
 export const Login: FC<any> = ({ navigation }) => {
@@ -49,6 +48,7 @@ export const Login: FC<any> = ({ navigation }) => {
         <TextInput
           label={'Enter Email'}
           mode='outlined'
+          secureTextEntry={false}
           placeholderTextColor={'orange'}
           activeOutlineColor={'orange'}
           textColor={'white'}
