@@ -29,6 +29,7 @@ export interface RTDBSliceInterface {
     meme: string;
     likes: [string];
     createdAt: Date;
+    dislikes: [string];
   }>;
 }
 
@@ -39,6 +40,6 @@ export interface MemeItemProps {
   createdAt?: Date;
   onLikePress?: () => void;
   onDislikesPress?: () => void;
-  dislikes?: Array<string>;
+  dislikes: Array<string>;
   dislikesColor?: string;
 }

@@ -15,11 +15,15 @@ const RTDBSlice = createSlice({
     setMemes(state, { payload }) {
       state.memes = [...state.memes, payload];
     },
-    updateMemesLikes(state, { payload }) {
+    updateMemes(state, { payload }) {
       state.memes = [
         ...state.memes.map((item) => {
           if (item.meme == payload.meme) {
-            return { ...item, likes: payload.likes };
+            return {
+              ...item,
+              likes: payload.likes,
+              dislikes: payload.dislikes,
+            };
           } else return item;
         }),
       ];
@@ -27,5 +31,5 @@ const RTDBSlice = createSlice({
   },
 });
 
-export const { setMessages, setMemes, updateMemesLikes } = RTDBSlice.actions;
+export const { setMessages, setMemes, updateMemes } = RTDBSlice.actions;
 export default RTDBSlice.reducer;
