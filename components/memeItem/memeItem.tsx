@@ -8,7 +8,7 @@ import { styles } from './memeItemStyles';
 export const MemeItem: FC<MemeItemProps> = (props) => {
   return props.meme ? (
     <View style={styles.container}>
-      <View>
+      <View style={styles.date}>
         {props.createdAt ? (
           <Text
             children={format(
@@ -36,7 +36,7 @@ export const MemeItem: FC<MemeItemProps> = (props) => {
 
           <MaterialIcons
             size={24}
-            onPress={() => props.onDislikePress()}
+            onPress={() => props.onDislikesPress()}
             name='thumb-down'
             color={props.dislikesColor}
           />

@@ -8,6 +8,8 @@ export const styles = StyleSheet.create({
     borderColor: 'orange',
     borderRadius: 5,
     marginVertical: 20,
+    height: 200,
+    justifyContent: 'space-between',
   },
   bottomContainer: {
     flexDirection: 'row',
@@ -21,4 +23,9 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   likes: { marginRight: 10 },
+  date: {
+    alignItems: 'flex-end',
+    width: '100%',
+    marginBottom: 10,
+  },
 });
