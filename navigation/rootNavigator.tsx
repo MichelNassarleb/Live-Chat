@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useContext, createContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { database } from '../config/firebase';
-import { setMemes, updateMemesLikes } from '../redux/slices/RTDBSlice';
+import { setMemes, updateMemes } from '../redux/slices/RTDBSlice';
 import { ChatStack } from './Stacks/chatStack';
 
 const AuthenticatedUserContext = createContext({});
@@ -32,9 +32,10 @@ export const RootNavigator = () => {
         snap.docChanges().map((doc: any) => {
           if (doc.type == 'modified') {
             dispatch(
-              updateMemesLikes({
+              updateMemes({
                 meme: doc.doc.data().meme,
                 likes: [...doc.doc.data().likes],
+                dislikes: [...doc.doc.data().dislikes],
               })
             );
           } else
@@ -43,6 +44,7 @@ export const RootNavigator = () => {
                 meme: doc.doc.data().meme,
                 likes: [...doc.doc.data().likes],
                 createdAt: doc.doc.data().createdAt.toDate(),
+                dislikes: [...doc.doc.data().dislikes],
               })
             );
         });
@@ -53,6 +55,7 @@ export const RootNavigator = () => {
               meme: doc.data().meme,
               likes: [...doc.data().likes],
               createdAt: doc.data().createdAt.toDate(),
+              dislikes: [...doc.data().dislikes],
               ...doc,
             })
           );

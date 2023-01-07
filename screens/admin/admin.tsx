@@ -22,6 +22,7 @@ export const Admin = () => {
       meme,
       likes: [],
       createdAt: new Date(),
+      dislikes: [],
     })
       .then(() => {
         setIsLoading(false);

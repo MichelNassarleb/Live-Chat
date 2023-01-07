@@ -51,6 +51,33 @@ export const Home: FC<any> = ({ navigation }) => {
       Alert.alert('You must be logged in');
     }
   };
+  const onDislikePress = (item: MemeItemProps) => {
+    const memeReference = doc(database, 'memes', item.meme);
+    if (
+      auth.currentUser?.email &&
+      !item?.dislikes.includes(auth.currentUser.email)
+    ) {
+      const dislikes = [...item.dislikes];
+      dislikes.push(auth.currentUser?.email);
+      updateDoc(memeReference, {
+        dislikes,
+      });
+    }
+    if (
+      auth.currentUser?.email &&
+      item.dislikes.includes(auth.currentUser.email)
+    ) {
+      const dislikes = [...item.dislikes];
+      const dislikesFiltered = dislikes.filter(
+        (dislike) => dislike != auth.currentUser?.email
+      );
+      updateDoc(memeReference, {
+        dislikes: dislikesFiltered,
+      });
+    } else if (!auth.currentUser?.email) {
+      Alert.alert('You must be logged in');
+    }
+  };
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -137,7 +164,6 @@ export const Home: FC<any> = ({ navigation }) => {
     });
     return () => unsubscribe();
   }, []);
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -146,11 +172,20 @@ export const Home: FC<any> = ({ navigation }) => {
           return (
             <MemeItem
               likes={item?.item?.likes}
+              dislikes={item?.item?.dislikes}
               meme={item?.item?.meme}
               createdAt={item?.item?.createdAt}
               onLikePress={() => onLikePress(item.item)}
+              onDislikesPress={() => onDislikePress(item.item)}
               color={
                 item?.item?.likes?.filter(
+                  (item) => item == auth.currentUser?.email
+                ).length > 0
+                  ? 'red'
+                  : 'grey'
+              }
+              dislikesColor={
+                item?.item?.dislikes?.filter(
                   (item) => item == auth.currentUser?.email
                 ).length > 0
                   ? 'red'
