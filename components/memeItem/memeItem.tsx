@@ -8,21 +8,39 @@ import { styles } from './memeItemStyles';
 export const MemeItem: FC<MemeItemProps> = (props) => {
   return props.meme ? (
     <View style={styles.container}>
+      <View>
+        {props.createdAt ? (
+          <Text
+            children={format(
+              new Date(props?.createdAt),
+              'yyyy-MM-dd HH:mm:ss a'
+            )}
+          />
+        ) : null}
+      </View>
       {props.meme ? <Text children={props.meme} /> : null}
-      {props.createdAt ? (
-        <Text
-          children={format(new Date(props?.createdAt), 'yyyy-MM-dd HH:mm:ss a')}
-        />
-      ) : null}
-      <View style={styles.bottomContainer}>
-        <Text children={props?.likes?.length} style={styles.likes} />
 
-        <MaterialIcons
-          size={24}
-          onPress={() => props.onLikePress()}
-          name='thumb-up'
-          color={props.color}
-        />
+      <View style={styles.bottomContainer}>
+        <View style={styles.bottomLeftContainer}>
+          <Text children={props?.likes?.length} style={styles.likes} />
+
+          <MaterialIcons
+            size={24}
+            onPress={() => props.onLikePress()}
+            name='thumb-up'
+            color={props.color}
+          />
+        </View>
+        <View style={styles.bottomLeftContainer}>
+          <Text children={props?.dislikes?.length} style={styles.likes} />
+
+          <MaterialIcons
+            size={24}
+            onPress={() => props.onDislikePress()}
+            name='thumb-down'
+            color={props.dislikesColor}
+          />
+        </View>
       </View>
     </View>
   ) : null;

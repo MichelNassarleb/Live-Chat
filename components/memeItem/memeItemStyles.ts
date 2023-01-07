@@ -12,6 +12,12 @@ export const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  bottomLeftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 10,
   },
   likes: { marginRight: 10 },
