@@ -1,5 +1,5 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
   Text,
@@ -11,15 +11,18 @@ import { Checkbox } from 'react-native-paper';
 import { TextInput } from '../../components/textInput';
 import { database } from '../../config/firebase';
 import { styles } from './adminStyles';
+import constants from '../../config/constants.json';
 export const Admin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memeInput, setMemeInput] = useState<string>('');
   const [memeLanguage, setMemeLanguage] = useState<string>('');
-
+  const [constantsLanguage, setConstansLanguage] = useState(
+    constants.languages
+  );
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
-    const memeRef = collection(database, 'memes');
 
+    const memeRef = collection(database, 'memes');
     setDoc(doc(memeRef, meme), {
       meme,
       likes: [],
@@ -59,19 +62,45 @@ export const Admin = () => {
         style={{ width: '90%', marginVertical: 20 }}
         contentStyle={styles.input}
       />
-      <TextInput
-        label={'Enter language'}
-        textColor={'white'}
-        value={memeLanguage}
-        mode='outlined'
-        secureTextEntry={true}
-        placeholderTextColor={'orange'}
-        activeOutlineColor={'orange'}
-        outlineColor={'orange'}
-        style={{ width: '90%', justifyContent: 'center' }}
-        contentStyle={[styles.input]}
-        onChangeText={setMemeLanguage}
-      />
+      {constantsLanguage.map(
+        (item: {
+          name: string;
+          status: 'checked' | 'unchecked' | 'indeterminate';
+          id: number;
+        }) => {
+          return (
+            <View style={{ flexDirection: 'row' }} key={item.id.toString()}>
+              <Text children={item.name} />
+              <Checkbox
+                onPress={() => {
+                  if (item.status == 'unchecked') {
+                    setConstansLanguage(
+                      constantsLanguage.map((language) => {
+                        if (language.name == item.name) {
+                          return { ...language, status: 'checked' };
+                        } else return language;
+                      })
+                    );
+                  } else if (item.status == 'checked') {
+                    setConstansLanguage(
+                      constantsLanguage.map((language) => {
+                        if (language.name == item.name) {
+                          return { ...language, status: 'unchecked' };
+                        } else {
+                          return language;
+                        }
+                      })
+                    );
+                  }
+                }}
+                uncheckedColor={'orange'}
+                color={'orange'}
+                status={item.status}
+              />
+            </View>
+          );
+        }
+      )}
       {isLoading ? (
         <ActivityIndicator
           testID='button-activityIndicator'
