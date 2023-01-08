@@ -7,6 +7,7 @@ import {
   View,
   Alert,
 } from 'react-native';
+import { Checkbox } from 'react-native-paper';
 import { TextInput } from '../../components/textInput';
 import { database } from '../../config/firebase';
 import { styles } from './adminStyles';
@@ -18,6 +19,7 @@ export const Admin = () => {
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
     const memeRef = collection(database, 'memes');
+
     setDoc(doc(memeRef, meme), {
       meme,
       likes: [],
