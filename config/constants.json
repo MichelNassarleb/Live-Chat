@@ -1,5 +1,7 @@
 {
     "languages":[
-        "english","french","arabic"
+      {"name":"Arabic","status":"unchecked","id":1},
+      {"name":"French","status":"unchecked","id":2},
+      {"name":"English","status":"unchecked","id":3}
     ]
 }
