@@ -19,6 +19,31 @@ export const Admin = () => {
   const [constantsLanguage, setConstansLanguage] = useState(
     constants.languages
   );
+  const onCheckBoxPress = (item: {
+    name: string;
+    status: 'checked' | 'unchecked' | 'indeterminate';
+    id: number;
+  }) => {
+    if (item.status == 'unchecked') {
+      setConstansLanguage(
+        constantsLanguage.map((language) => {
+          if (language.name == item.name) {
+            return { ...language, status: 'checked' };
+          } else return language;
+        })
+      );
+    } else if (item.status == 'checked') {
+      setConstansLanguage(
+        constantsLanguage.map((language) => {
+          if (language.name == item.name) {
+            return { ...language, status: 'unchecked' };
+          } else {
+            return language;
+          }
+        })
+      );
+    }
+  };
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
 
@@ -72,27 +97,7 @@ export const Admin = () => {
             <View style={{ flexDirection: 'row' }} key={item.id.toString()}>
               <Text children={item.name} />
               <Checkbox
-                onPress={() => {
-                  if (item.status == 'unchecked') {
-                    setConstansLanguage(
-                      constantsLanguage.map((language) => {
-                        if (language.name == item.name) {
-                          return { ...language, status: 'checked' };
-                        } else return language;
-                      })
-                    );
-                  } else if (item.status == 'checked') {
-                    setConstansLanguage(
-                      constantsLanguage.map((language) => {
-                        if (language.name == item.name) {
-                          return { ...language, status: 'unchecked' };
-                        } else {
-                          return language;
-                        }
-                      })
-                    );
-                  }
-                }}
+                onPress={() => onCheckBoxPress(item)}
                 uncheckedColor={'orange'}
                 color={'orange'}
                 status={item.status}
