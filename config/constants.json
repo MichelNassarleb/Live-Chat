@@ -1,7 +1,7 @@
 {
     "languages":[
-      {"name":"Arabic","status":"unchecked","id":1},
-      {"name":"French","status":"unchecked","id":2},
-      {"name":"English","status":"unchecked","id":3}
+      {"name":"Arabic","id":1},
+      {"name":"French","id":2},
+      {"name":"English","id":3}
     ]
 }

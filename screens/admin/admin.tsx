@@ -19,31 +19,6 @@ export const Admin = () => {
   const [constantsLanguage, setConstansLanguage] = useState(
     constants.languages
   );
-  const onCheckBoxPress = (item: {
-    name: string;
-    status: 'checked' | 'unchecked' | 'indeterminate';
-    id: number;
-  }) => {
-    if (item.status == 'unchecked') {
-      setConstansLanguage(
-        constantsLanguage.map((language) => {
-          if (language.name == item.name) {
-            return { ...language, status: 'checked' };
-          } else return language;
-        })
-      );
-    } else if (item.status == 'checked') {
-      setConstansLanguage(
-        constantsLanguage.map((language) => {
-          if (language.name == item.name) {
-            return { ...language, status: 'unchecked' };
-          } else {
-            return language;
-          }
-        })
-      );
-    }
-  };
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
 
@@ -87,25 +62,7 @@ export const Admin = () => {
         style={{ width: '90%', marginVertical: 20 }}
         contentStyle={styles.input}
       />
-      {constantsLanguage.map(
-        (item: {
-          name: string;
-          status: 'checked' | 'unchecked' | 'indeterminate';
-          id: number;
-        }) => {
-          return (
-            <View style={{ flexDirection: 'row' }} key={item.id.toString()}>
-              <Text children={item.name} />
-              <Checkbox
-                onPress={() => onCheckBoxPress(item)}
-                uncheckedColor={'orange'}
-                color={'orange'}
-                status={item.status}
-              />
-            </View>
-          );
-        }
-      )}
+
       {isLoading ? (
         <ActivityIndicator
           testID='button-activityIndicator'
