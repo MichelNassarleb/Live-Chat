@@ -1,5 +1,5 @@
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import React, { useState, useCallback, useMemo } from 'react';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Text,
@@ -7,11 +7,12 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { Checkbox } from 'react-native-paper';
 import { TextInput } from '../../components/textInput';
 import { database } from '../../config/firebase';
 import { styles } from './adminStyles';
 import constants from '../../config/constants.json';
+import { Picker } from '@react-native-picker/picker';
+
 export const Admin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memeInput, setMemeInput] = useState<string>('');
@@ -19,6 +20,10 @@ export const Admin = () => {
   const [constantsLanguage, setConstansLanguage] = useState(
     constants.languages
   );
+  const [selectedValue, setSelectedValue] = useState(
+    constants.languages[0].value
+  );
+
   const onSubmit = useCallback((meme: string) => {
     setIsLoading(true);
 
@@ -42,6 +47,9 @@ export const Admin = () => {
         setMemeLanguage('');
       });
   }, []);
+
+  const pickerRef = useRef(null);
+
   return (
     <View
       style={[
@@ -62,7 +70,18 @@ export const Admin = () => {
         style={{ width: '90%', marginVertical: 20 }}
         contentStyle={styles.input}
       />
-
+      <Picker
+        style={{ width: '30%', height: 20 }}
+        onValueChange={(item) => setSelectedValue(item)}
+        selectedValue={selectedValue}
+        ref={pickerRef}
+      >
+        {constantsLanguage.map((item) => {
+          return (
+            <Picker.Item key={item.id} value={item.value} label={item.label} />
+          );
+        })}
+      </Picker>
       {isLoading ? (
         <ActivityIndicator
           testID='button-activityIndicator'
