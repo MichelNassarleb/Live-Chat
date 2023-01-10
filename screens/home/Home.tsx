@@ -20,6 +20,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { authenticationSignOut } from '../../services/signout';
 import { RootState } from '../../redux/store';
 import { MemeItemProps } from '../../config/interfaces';
+import SegmentedControl from '@react-native-community/segmented-control';
 
 export const Home: FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -156,18 +157,33 @@ export const Home: FC<any> = ({ navigation }) => {
     });
     return () => unsubscribe();
   }, []);
-  const data = useSelector((state: RootState) => state.RTDB.memes);
-
+  const dataMemes = useSelector((state: RootState) => state.RTDB.memes);
+  const items = [dataMemes, []];
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
     });
     return () => unsubscribe();
   }, []);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   return (
     <View style={styles.container}>
+      <SegmentedControl
+        style={{ marginTop: 15 }}
+        backgroundColor={'#fff'}
+        tintColor='orange'
+        fontStyle={{ color: 'black' }}
+        activeFontStyle={{
+          color: 'white',
+        }}
+        values={['Memes', 'Meditation Quotes']}
+        selectedIndex={selectedIndex}
+        onChange={(event) => {
+          setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
+        }}
+      />
       <FlatList
-        data={data}
+        data={items[selectedIndex]}
         renderItem={(item: { item: MemeItemProps }) => {
           return (
             <MemeItem
