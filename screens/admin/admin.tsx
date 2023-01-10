@@ -16,7 +16,6 @@ import { Picker } from '@react-native-picker/picker';
 export const Admin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memeInput, setMemeInput] = useState<string>('');
-  const [memeLanguage, setMemeLanguage] = useState<string>('');
   const [constantsLanguage, setConstansLanguage] = useState(
     constants.languages
   );
@@ -33,18 +32,17 @@ export const Admin = () => {
       likes: [],
       createdAt: new Date(),
       dislikes: [],
+      language: selectedValue,
     })
       .then(() => {
         setIsLoading(false);
         Alert.alert('Meme added successfully');
         setMemeInput('');
-        setMemeLanguage('');
       })
       .catch((er) => {
         Alert.alert(er);
         setMemeInput('');
         setIsLoading(false);
-        setMemeLanguage('');
       });
   }, []);
 
@@ -91,10 +89,10 @@ export const Admin = () => {
         />
       ) : (
         <TouchableOpacity
-          disabled={!(!!memeInput && !!memeLanguage)}
+          disabled={!(!!memeInput && !!selectedValue)}
           style={[
             styles.button,
-            !(!!memeLanguage && !!memeInput) && { backgroundColor: 'grey' },
+            !(!!memeInput && !!selectedValue) && { backgroundColor: 'grey' },
           ]}
           onPress={() => onSubmit(memeInput)}
         >
