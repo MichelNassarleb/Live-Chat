@@ -30,6 +30,7 @@ export interface RTDBSliceInterface {
     likes: [string];
     createdAt: Date;
     dislikes: [string];
+    language: string;
   }>;
 }
 
