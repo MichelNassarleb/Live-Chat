@@ -16,27 +16,18 @@ import { Picker } from '@react-native-picker/picker';
 export const Admin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [memeInput, setMemeInput] = useState<string>('');
-  const [constantsLanguage, setConstansLanguage] = useState(
-    constants.languages
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    constants.languages[0].value
   );
-  const [selectedLanguage, setSelectedLanguage] = useState('');
-  console.log(selectedLanguage);
   const onSubmit = useCallback((meme: string, language: string) => {
     setIsLoading(true);
-    console.log({
-      meme,
-      likes: [],
-      createdAt: new Date(),
-      dislikes: [],
-      language,
-    });
     const memeRef = collection(database, 'memes');
     setDoc(doc(memeRef, meme), {
       meme,
       likes: [],
       createdAt: new Date(),
       dislikes: [],
-      language: selectedLanguage,
+      language,
     })
       .then(() => {
         setIsLoading(false);
@@ -80,7 +71,7 @@ export const Admin = () => {
         selectedValue={selectedLanguage}
         ref={pickerRef}
       >
-        {constantsLanguage.map((item) => {
+        {constants.languages.map((item) => {
           return (
             <Picker.Item key={item.id} value={item.value} label={item.label} />
           );
