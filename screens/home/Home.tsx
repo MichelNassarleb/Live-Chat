@@ -1,4 +1,4 @@
-import React, { useEffect, FC, useState } from 'react';
+import React, { useEffect, FC, useState, useMemo } from 'react';
 import { Text, Alert, View, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { AntDesign, Entypo } from '@expo/vector-icons';
@@ -25,6 +25,19 @@ import SegmentedControl from '@react-native-community/segmented-control';
 export const Home: FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [user, setUser] = useState<any>(null);
+  const dataMemes = useSelector((state: RootState) => state.RTDB.memes);
+  const [memes, setMemes] = useState(dataMemes);
+  const [allMemes, setAllMemes] = useState(dataMemes);
+  const ArabicMemes = useMemo(() => {
+    return memes.filter((meme) => meme.language == 'Arabic');
+  }, [dataMemes]);
+  const FrenchMemes = useMemo(() => {
+    return memes.filter((meme) => meme.language == 'French');
+  }, [dataMemes]);
+  const EnglishMemes = useMemo(() => {
+    return memes.filter((meme) => meme.language == 'English');
+  }, [dataMemes]);
+  // console.log(allMemes);
   const onLikePress = (item: MemeItemProps) => {
     const memeReference = doc(database, 'memes', item.meme);
     if (
@@ -157,8 +170,12 @@ export const Home: FC<any> = ({ navigation }) => {
     });
     return () => unsubscribe();
   }, []);
-  const dataMemes = useSelector((state: RootState) => state.RTDB.memes);
-  const items = [dataMemes, []];
+
+  const items = [memes, []];
+  useEffect(() => {
+    setMemes(dataMemes);
+    setAllMemes(dataMemes);
+  }, [dataMemes]);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
@@ -166,6 +183,8 @@ export const Home: FC<any> = ({ navigation }) => {
     return () => unsubscribe();
   }, []);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [languageSelectedIndex, setLanguageSelectedIndex] = useState<number>(0);
+
   return (
     <View style={styles.container}>
       <SegmentedControl
@@ -182,6 +201,31 @@ export const Home: FC<any> = ({ navigation }) => {
           setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
         }}
       />
+      {selectedIndex == 0 ? (
+        <SegmentedControl
+          style={{ marginTop: 15 }}
+          backgroundColor={'#fff'}
+          tintColor='orange'
+          fontStyle={{ color: 'black' }}
+          activeFontStyle={{
+            color: 'white',
+          }}
+          values={['All', 'Arabic', 'French', 'English']}
+          selectedIndex={languageSelectedIndex}
+          onChange={(event) => {
+            setLanguageSelectedIndex(event.nativeEvent.selectedSegmentIndex);
+            if (event.nativeEvent.selectedSegmentIndex == 0) {
+              setMemes(allMemes);
+            } else if (event.nativeEvent.selectedSegmentIndex == 1) {
+              setMemes(ArabicMemes);
+            } else if (event.nativeEvent.selectedSegmentIndex == 2) {
+              setMemes(FrenchMemes);
+            } else if (event.nativeEvent.selectedSegmentIndex == 3) {
+              setMemes(EnglishMemes);
+            }
+          }}
+        />
+      ) : null}
       <FlatList
         data={items[selectedIndex]}
         renderItem={(item: { item: MemeItemProps }) => {
