@@ -19,20 +19,24 @@ export const Admin = () => {
   const [constantsLanguage, setConstansLanguage] = useState(
     constants.languages
   );
-  const [selectedValue, setSelectedValue] = useState(
-    constants.languages[0].value
-  );
-
-  const onSubmit = useCallback((meme: string) => {
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  console.log(selectedLanguage);
+  const onSubmit = useCallback((meme: string, language: string) => {
     setIsLoading(true);
-
+    console.log({
+      meme,
+      likes: [],
+      createdAt: new Date(),
+      dislikes: [],
+      language,
+    });
     const memeRef = collection(database, 'memes');
     setDoc(doc(memeRef, meme), {
       meme,
       likes: [],
       createdAt: new Date(),
       dislikes: [],
-      language: selectedValue,
+      language: selectedLanguage,
     })
       .then(() => {
         setIsLoading(false);
@@ -70,8 +74,10 @@ export const Admin = () => {
       />
       <Picker
         style={{ width: '30%', height: 20 }}
-        onValueChange={(item) => setSelectedValue(item)}
-        selectedValue={selectedValue}
+        onValueChange={(item) => {
+          setSelectedLanguage(item);
+        }}
+        selectedValue={selectedLanguage}
         ref={pickerRef}
       >
         {constantsLanguage.map((item) => {
@@ -89,12 +95,12 @@ export const Admin = () => {
         />
       ) : (
         <TouchableOpacity
-          disabled={!(!!memeInput && !!selectedValue)}
+          disabled={!(!!memeInput && !!selectedLanguage)}
           style={[
             styles.button,
-            !(!!memeInput && !!selectedValue) && { backgroundColor: 'grey' },
+            !(!!memeInput && !!selectedLanguage) && { backgroundColor: 'grey' },
           ]}
-          onPress={() => onSubmit(memeInput)}
+          onPress={() => onSubmit(memeInput, selectedLanguage)}
         >
           <Text
             style={{ fontWeight: 'bold', color: '#fff', fontSize: 18 }}
