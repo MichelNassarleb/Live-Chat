@@ -45,6 +45,7 @@ export const RootNavigator = () => {
                 likes: [...doc.doc.data().likes],
                 createdAt: doc.doc.data().createdAt.toDate(),
                 dislikes: [...doc.doc.data().dislikes],
+                language: doc.doc.data().language,
               })
             );
         });
