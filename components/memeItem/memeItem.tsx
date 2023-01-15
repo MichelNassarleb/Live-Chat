@@ -11,11 +11,14 @@ export const MemeItem: FC<MemeItemProps> = (props) => {
       <View style={styles.date}>
         {props.createdAt ? (
           <Text
+            style={{ color: 'white' }}
             children={format(new Date(props?.createdAt), 'dd-MM-yy HH:mm a')}
           />
         ) : null}
       </View>
-      {props.meme ? <Text children={props.meme} /> : null}
+      {props.meme ? (
+        <Text style={{ color: 'white' }} children={props.meme} />
+      ) : null}
 
       <View style={styles.bottomContainer}>
         <View style={styles.bottomLeftContainer}>

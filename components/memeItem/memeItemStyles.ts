@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-  likes: { marginRight: 10 },
+  likes: { marginRight: 10, color: 'white' },
   date: {
     alignItems: 'flex-end',
     width: '100%',
