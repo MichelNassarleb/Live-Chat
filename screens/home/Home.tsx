@@ -242,14 +242,14 @@ export const Home: FC<any> = ({ navigation }) => {
                   (item) => item == auth.currentUser?.email
                 ).length > 0
                   ? 'red'
-                  : 'grey'
+                  : 'white'
               }
               dislikesColor={
                 item?.item?.dislikes?.filter(
                   (item) => item == auth.currentUser?.email
                 ).length > 0
                   ? 'red'
-                  : 'grey'
+                  : 'white'
               }
             />
           );
