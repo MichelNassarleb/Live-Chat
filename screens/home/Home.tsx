@@ -37,7 +37,7 @@ export const Home: FC<any> = ({ navigation }) => {
   const EnglishMemes = useMemo(() => {
     return memes.filter((meme) => meme.language == 'English');
   }, [dataMemes]);
-  // console.log(allMemes);
+
   const onLikePress = (item: MemeItemProps) => {
     const memeReference = doc(database, 'memes', item.meme);
     if (
