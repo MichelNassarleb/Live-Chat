@@ -4,6 +4,7 @@ import { RTDBSliceInterface } from '../../config/interfaces';
 const initialState: RTDBSliceInterface = {
   messages: [],
   memes: [],
+  meditation: [],
 };
 const RTDBSlice = createSlice({
   name: 'RTDB',
@@ -14,6 +15,9 @@ const RTDBSlice = createSlice({
     },
     setMemes(state, { payload }) {
       state.memes = [...state.memes, payload];
+    },
+    setMeditationQuotes(state, { payload }) {
+      state.meditation = [state.meditation, ...payload];
     },
     updateMemes(state, { payload }) {
       state.memes = [
