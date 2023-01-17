@@ -32,6 +32,9 @@ export interface RTDBSliceInterface {
     dislikes: [string];
     language: string;
   }>;
+  meditation: Array<{
+    text: string;
+  }>;
 }
 
 export interface MemeItemProps {
