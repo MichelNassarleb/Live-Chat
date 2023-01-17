@@ -170,8 +170,11 @@ export const Home: FC<any> = ({ navigation }) => {
     });
     return () => unsubscribe();
   }, []);
+  const MeditationQuotes = useSelector(
+    (state: RootState) => state.RTDB.meditation
+  );
 
-  const items = [memes, []];
+  const items = [memes, MeditationQuotes];
   useEffect(() => {
     setMemes(dataMemes);
     setAllMemes(dataMemes);
