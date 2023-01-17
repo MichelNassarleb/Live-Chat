@@ -35,5 +35,6 @@ const RTDBSlice = createSlice({
   },
 });
 
-export const { setMessages, setMemes, updateMemes } = RTDBSlice.actions;
+export const { setMessages, setMemes, updateMemes, setMeditationQuotes } =
+  RTDBSlice.actions;
 export default RTDBSlice.reducer;

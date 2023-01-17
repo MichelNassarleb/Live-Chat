@@ -34,6 +34,7 @@ export interface RTDBSliceInterface {
   }>;
   meditation: Array<{
     text: string;
+    createdAt?: Date;
   }>;
 }
 

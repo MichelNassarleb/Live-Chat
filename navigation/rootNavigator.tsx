@@ -9,7 +9,11 @@ import {
 import React, { useEffect, useContext, createContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { database } from '../config/firebase';
-import { setMemes, updateMemes } from '../redux/slices/RTDBSlice';
+import {
+  setMeditationQuotes,
+  setMemes,
+  updateMemes,
+} from '../redux/slices/RTDBSlice';
 import { ChatStack } from './Stacks/chatStack';
 
 const AuthenticatedUserContext = createContext({});
@@ -25,6 +29,8 @@ const AuthenticatedUserProvider = ({ children }) => {
 export const RootNavigator = () => {
   const memesRef = collection(database, 'memes', '');
   const qMemes = query(memesRef, orderBy('createdAt', 'desc'));
+  const medtationRef = collection(database, 'meditation');
+  const meditationQuotes = query(medtationRef, orderBy('createdAt', 'desc'));
   const dispatch = useDispatch();
   useEffect(() => {
     const unsub = onSnapshot(qMemes, (snap) => {
@@ -58,6 +64,21 @@ export const RootNavigator = () => {
               createdAt: doc.data().createdAt.toDate(),
               dislikes: [...doc.data().dislikes],
               ...doc,
+            })
+          );
+        });
+      }
+    });
+    return () => unsub();
+  }, []);
+  useEffect(() => {
+    const unsub = onSnapshot(qMemes, (snap) => {
+      {
+        snap.docs.map((doc) => {
+          dispatch(
+            setMeditationQuotes({
+              text: doc.data().meme,
+              createdAt: doc.data().createdAt.toDate(),
             })
           );
         });
