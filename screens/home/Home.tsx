@@ -263,13 +263,13 @@ export const Home: FC<any> = ({ navigation }) => {
         onPress={() => {
           if (auth.currentUser?.email) navigation.navigate('Chat');
           else {
-            Alert.alert('You need to login first', '', [
+            Alert.alert('You must login first', '', [
               {
                 text: 'Cancel',
                 onPress: () => null,
               },
               {
-                text: 'Go to the login page',
+                text: 'Navigate to the login page',
                 onPress: () => navigation.navigate('Login'),
               },
             ]);
